@@ -32,15 +32,21 @@
 			}
 			#chrome-ext {
 				text-decoration: none;
-				color: whiteSmoke;
-				padding: 5px 10px;
-				border: 1px solid black;
+				color: white;
+				padding: 10px 10px;
 				border-radius: 2px;
 				line-height: 3;
-				box-shadow: 1px 2px 3px #777;
-				background: -webkit-linear-gradient(top, #45484D 0%,black 100%);
+				box-shadow: 0 0 3px #333;
+				background: -webkit-linear-gradient(top, #87AB41 0%, #658031 100%);
+				-webkit-transition: all .3s ease-out;
 			}
 
+			#chrome-ext:hover {
+				box-shadow: 0px 0px 15px #333;
+			}
+			.download-container{
+				margin-top: 10px;
+			}
 			.content-shadow {
 				box-shadow: 0 0px 10px rgba(0, 0, 0, .5);
 			}
@@ -85,11 +91,13 @@
 				<p>
 					The Excel Importer has been updated to follow the new API and instructions of developing extensiton for Chrome.
 					This Google Chrome extension will load the bookmarklet script automatically once you enter the time tracker page.<br />
-					<a id="chrome-ext" href="ExcelImporter.crx">Download and install Excel-Importer chrome extension</a>
+					<div class="download-container">
+						<a id="chrome-ext" href="ExcelImporter.crx">Download and install Excel-Importer chrome extension</a>
+					</div>
 				</p>
 				<h2>How To Install The Extension</h2>
 				<ol>
-					<li>Open the <a href="chrome://chrome/extensions/">extension page</a></li>
+					<li>Open Google Chrome's <a href="chrome://chrome/extensions/" target="_blank">extension page</a> (url: <i>chrome://chrome/extensions/</i>)</li>
 					<li>Drag the extension file you've downloaded and drop it into this page</li>
 					<li>approve installation.</li>
 				</ol>
