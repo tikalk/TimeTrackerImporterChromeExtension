@@ -28,5 +28,5 @@
   "web_accessible_resources": [
     "tikalTimePosting.js"
   ],
-  "update_url": "http://orizens.com/tools/ExcelImporter-updates.xml"
+  "update_url": "http://tikalk.github.com/TimeTrackerImporterChromeExtension/ExcelImporter-updates.xml"
 }
