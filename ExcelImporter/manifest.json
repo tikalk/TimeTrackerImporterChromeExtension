@@ -1,6 +1,6 @@
 {
   "name" : "Tikal Excel Importer (By Oren Farhi))",
-  "version": "2.0",
+  "version": "2.1",
   "manifest_version" : 2,
   "description" : "Copy & Paste an excel sheet or a table format of an entire month to Tikal's time tracker. By Oren Farhi 2012",
   "background" : {
