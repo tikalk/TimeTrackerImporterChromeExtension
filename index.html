@@ -6,23 +6,29 @@
 		<link href='http://fonts.googleapis.com/css?family=Pompiere' rel='stylesheet' type='text/css'>
 		<style type="text/css">
 			body {
-                font-family: verdana;
-                font-size: 0.8em;
-				font-family: DroidSansRegular, Georgia, "Times New Roman", serif;
+				font-size: 0.8em;
+				font-family: Verdana;
 				background-image: url('http://subtlepatterns.com/patterns/soft_wallpaper.png');
 				background-repeat: repeat;
 				background-position: top left;
+				padding: 0;
+				margin: 0;
 			}
-			
-            #main {
-                width: 960px;
-                margin: 0 auto;
-            }
+			h1 {
+				font-size: 50px;
+				background: rgba(0, 0, 0, .6);
+				margin: 0;
+				padding: 10px;
+				margin: 10px 0;
+			}
+			#main {
+				width: 960px;
+				margin: 0 auto;
+			}
 			#content {
-                padding: 10px 20px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-				background-color: #fefefe;
+				padding: 10px 20px;
+				background-color: rgba(255, 255, 255, .7);
+				margin-left: 182px;
 			}
 			#chrome-ext {
 				text-decoration: none;
@@ -34,45 +40,68 @@
 				box-shadow: 1px 2px 3px #777;
 				background: -webkit-linear-gradient(top, #45484D 0%,black 100%);
 			}
-            h1, h2 {
-                font-family: Trebuchet MS, verdana;
-                color: rgb(102, 168, 123);
+
+			.content-shadow {
+				box-shadow: 0 0px 10px rgba(0, 0, 0, .5);
+			}
+			h1, h2 {
+				font-family: Trebuchet MS, verdana;
+				color: #A9C76D;
 			}
 			h1 {
 				font-family: 'Marvel', sans-serif;
+				margin-left: 182px
 			}
 			h2 {
 				font-family: 'Pompiere', cursive;
+				color: #647F30;
+				box-shadow: 0 5px 16px -7px gray;
 			}
-            p, li {
-                color: #999;
+			p, li {
 				line-height: 1.5;
-            }
+			}
+			footer {
+				padding: 10px 0 10px 182px;
+			}
+			.logo {
+				float: left;
+			}
+			a:link, a:visited {
+				color: #85A840;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="main">
-			<h1>Tikal Excel Importer / Oren Farhi</h1>
-			<div id="content">
-				<p>TEI is a bookmarklet (javascript) &amp; a Chrome extension which will auto post your <u>Montly</u> excel time sheet to tikal.</p>
-				<h2>UPDATE: 01/09/2012 - Chrome extenstion for TEI</h2>
+			<img src="images/icon_large_tie.jpg" alt="Tie logo" class="logo content-shadow">
+			<h1 class="content-shadow">Tie - Tikal's Time Tracker Sheet Importer</h1>
+			<div id="content" class="content-shadow">
+				<p>Tie is a a Chrome extension which will let you post your <strong>Montly</strong> excel time sheet to <a href="http://www.tikalk.com">Tikal's</a> time tracker.</p>
+				<h2>UPDATE: 01/09/2012 - Chrome extenstion for Tie</h2>
 				<p>
 					The Excel Importer has been updated to follow the new API and instructions of developing extensiton for Chrome.
 					This Google Chrome extension will load the bookmarklet script automatically once you enter the time tracker page.<br />
 					<a id="chrome-ext" href="ExcelImporter.crx">Download and install Excel-Importer chrome extension</a>
 				</p>
 				<h2>How To Install The Extension</h2>
-				<ul>
+				<ol>
 					<li>Open the <a href="chrome://chrome/extensions/">extension page</a></li>
 					<li>Drag the extension file you've downloaded and drop it into this page</li>
 					<li>approve installation.</li>
-				</ul>
+				</ol>
 				<h2>Requirements</h2>
 				<p>
 					Your excel should have 3 columns in the following order: day, start time, end time.<br/>
-					you can download an example of such an excel file <a href="Tikal-Hours-2010.xls">Here</a>.
+					you can <a href="Tikal-Hours.xls">download an example of such an excel file</a>.
 				</p>
 			</div>
+			<footer>
+				By <a href="http://www.tikalk.com/users/orenf">Oren Farhi</a>
+			</footer>
 		</div>
 	</body>
 </html>
