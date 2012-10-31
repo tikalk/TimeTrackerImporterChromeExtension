@@ -12,7 +12,7 @@ var start = function(){
 var createTextHolder = function ()
 {
 	var t = [];
-	t.push('<style>ol.import-steps li {font-size: 1.3em} li h2 {font-size: 1em;} form[name=mytimeForm]{position: absolute;left: 567px;top: 126px;}#activity{margin-left: 64px;}</style>')
+	t.push('<style>ol.import-steps li {font-size: 1.3em} li h2 {font-size: 1em;} form[name=mytimeForm]{position: absolute;left: 567px;top: 126px;}#activity{margin-left: 64px;}form[name=mytimeForm] + table { {position: fixed;bottom: 0; right: 0;width: 42%; background: white; box-shadow: 0 0 15px 2px lightgray;}</style>');
 	t.push('<div style="padding: 10px 20px;">');
 	t.push('<ol class="import-steps">');
 		t.push('<li>Select Year and Month of your timesheet');
