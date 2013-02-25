@@ -28,6 +28,4 @@
   "web_accessible_resources": [
     "tikalTimePosting.js"
   ]
-  // no need for this attribute if extension is distributed with Google's Web Store (see readme.md)
-  // "update_url": "http://tikalk.github.com/TimeTrackerImporterChromeExtension/ExcelImporter-updates.xml"
 }
