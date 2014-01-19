@@ -13,11 +13,11 @@ var createTextHolder = function ()
 {
 	var t = [];
 	t.push('<style>ol.import-steps li {font-size: 1.3em} li h2 {font-size: 1em;} form[name=mytimeForm]{position: absolute;left: 567px;top: 126px;}#activity{margin-left: 64px;}form[name=mytimeForm] + table { {position: fixed;bottom: 0; right: 0;width: 42%; background: white; box-shadow: 0 0 15px 2px lightgray;}</style>');
-	t.push('<div style="padding: 10px 20px;">');
+	t.push('<div id="tti" style="padding: 10px 20px;">');
 	t.push('<ol class="import-steps">');
 		t.push('<li>Select Year and Month of your timesheet');
 			t.push('<div id="cal-picker">');
-			t.push('<span>Year:</span><select style="padding: 4px;" name="sheet-year" id="sheet-year"> <optgroup label="Pick A Year"><option value="2012" selected>2012</option> <option value="2013">2013</option> <option value="2014">2014</option> <option value="2015">2015</option><option value="2016">2016</option> </optgroup> </select>');
+			t.push('<span>Year:</span><select style="padding: 4px;" name="sheet-year" id="sheet-year"> <optgroup label="Pick A Year"><option value="2014">2014</option> <option value="2015">2015</option><option value="2016">2016</option> </optgroup> </select>');
 			t.push('</div>');
 			t.push('<div><span>Month:</span>');
 			t.push('<select style="padding: 4px;" name="sheet-month" id="sheet-month"><option value="0">Pick A month</option> <option value="01">January</option> <option value="02">February</option> <option value="03">March</option> <option value="04">April</option> <option value="05">May</option> <option value="06">June</option> <option value="07">July</option> <option value="08">August</option> <option value="09">September</option> <option value="10">October</option> <option value="11">November</option> <option value="12">December</option> </select>');
@@ -41,7 +41,7 @@ var createTextHolder = function ()
 		t.push('<script type="text/javascript">addEvents()</script>');
 		t.push('</div>');
 	t.push('<ol>');
-	$('body > table').eq(3).after(t.join(''));
+	jQuery('form[name=timeRecordForm] td[valign=top]').eq(0).after(t.join(''));
 }
 
 var addEvents = function ()
@@ -49,15 +49,19 @@ var addEvents = function ()
 	$('#generate-table').on('click', transform);
 	$('#post-data').on('click', postData);
 	//- reorder the calendar and project picker
-	var oldFormRow = $('form[name=mytimeForm]').find('table table > tbody > tr').eq(0),
-		projectPicker = oldFormRow.find('td').eq(0).detach().find('table > tbody > tr');
+	var oldForm = jQuery('form[name=timeRecordForm] td[valign=top]');
+	// var oldFormRow = $('form[name=mytimeForm]').find('table table > tbody > tr').eq(0),
+	var projectPicker = oldForm.find('select');
+	$('#project-picker').append('<br>');
 	$('#project-picker').append(projectPicker.eq(0).detach());
-	$('#project-picker').append(projectPicker.eq(1).find('select').detach());
-	// $('form[name=mytimeForm]').remove();
+	$('#project-picker').append('<br>');
+	$('#project-picker').append(projectPicker.eq(1).detach());
+	oldForm.html($('#tti'));
 }
 
-var postData = function ()
+var postData = function (ev)
 {
+	ev.preventDefault();
 	var days = $('#excel-import-table tbody tr'), posts = [], currentDay, t, c, d,fullYear;
 	if (days.length > 0)
 	{
@@ -95,8 +99,9 @@ var postData = function ()
 	}
 }
 
-var transform = function ()
-{
+var transform = function (ev)
+{	
+	ev.preventDefault();
 	var t = $.trim($('#excel-data').val());
 	if (t == '')
 		return;
@@ -187,56 +192,3 @@ var postToTikal = function ()
 }
 postToTikal.hasPosts = false;
 postToTikal.errors = [];
-/* delete all posts
-
-
-
-
-
-var posts = [], monthRows = $('div.CalendarCommonCell').parents('table').eq(0).next().find('table tbody tr'), dates = [], currentRow, dateLink;
-//console.log(monthRows);
-for (var i = 2; i < monthRows.length; i++) {
-	currentRow = monthRows.eq(i).find('td');
-	if (currentRow) {
-		for (var j = 0; j < currentRow.length; j++) {
-			dateLink = currentRow.eq(j).find('a').attr('href');
-			if (dateLink)
-				dates.push(dateLink);
-		}
-	}
-}
-function collectTasksToDelete() {
-	for (var i = 0; i < dates.length; i++) {
-		if (dates[i]) {
-		$.get('https://planet.tikalk.com/timetracker/mytime.php' + dates[i],
-			function (data) {
-				var links = $(data).find('.tableHeader').parent().parent().find('a[href]'), link;
-				link = links.eq(1).attr('href');
-				console.log('link: ' + link)
-				posts.push(link);
-			});
-		}
-	}
-	deleteAllPosts()
-	console.log('posts:' + posts);
-}
-var results = [];
-function deleteAllPosts() {
-	for (var i = 0; i < 5; i++) {
-		if (posts[i]) {
-		$.post('https://planet.tikalk.com/timetracker/' + posts[i],
-			function (data) {
-				results.push(data);
-			});
-		}
-	}
-}
-console.log('dates: ' + dates);
-collectTasksToDelete();
-
-
-
-
-
-
-*/

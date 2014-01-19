@@ -12,27 +12,26 @@
 
   ****************************************/
 
-var s = document.createElement('script');
-s.onload = function()
-{
-	createTextHolder();
-}
-s.setAttribute('src', 'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js');
+// var s = document.createElement('script');
+// s.onload = function()
+// {
+// 	createTextHolder();
+// }
+// s.setAttribute('src', 'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js');
 
-var start = function(){
-	// document.body.appendChild(s);
-	createTextHolder()
-}
+// var start = function(){
+// 	document.body.appendChild(s);
+// }
 
 var createTextHolder = function ()
 {
 	var t = [];
-	t.push('<style>ol.import-steps li {font-size: 1.3em} li h2 {font-size: 1em;} form[name=mytimeForm]{position: absolute;left: 567px;top: 126px;}#activity{margin-left: 64px;}</style>')
-	t.push('<div style="padding: 10px 20px;">');
+	t.push('<style>ol.import-steps li {font-size: 1.3em} li h2 {font-size: 1em;} form[name=mytimeForm]{position: absolute;left: 567px;top: 126px;}#activity{margin-left: 64px;}form[name=mytimeForm] + table { {position: fixed;bottom: 0; right: 0;width: 42%; background: white; box-shadow: 0 0 15px 2px lightgray;}</style>');
+	t.push('<div id="tti" style="padding: 10px 20px;">');
 	t.push('<ol class="import-steps">');
 		t.push('<li>Select Year and Month of your timesheet');
 			t.push('<div id="cal-picker">');
-			t.push('<span>Year:</span><select style="padding: 4px;" name="sheet-year" id="sheet-year"> <optgroup label="Pick A Year"><option value="2012" selected>2012</option> <option value="2013">2013</option> <option value="2014">2014</option> <option value="2015">2015</option><option value="2016">2016</option> </optgroup> </select>');
+			t.push('<span>Year:</span><select style="padding: 4px;" name="sheet-year" id="sheet-year"> <optgroup label="Pick A Year"><option value="2014">2014</option> <option value="2015">2015</option><option value="2016">2016</option> </optgroup> </select>');
 			t.push('</div>');
 			t.push('<div><span>Month:</span>');
 			t.push('<select style="padding: 4px;" name="sheet-month" id="sheet-month"><option value="0">Pick A month</option> <option value="01">January</option> <option value="02">February</option> <option value="03">March</option> <option value="04">April</option> <option value="05">May</option> <option value="06">June</option> <option value="07">July</option> <option value="08">August</option> <option value="09">September</option> <option value="10">October</option> <option value="11">November</option> <option value="12">December</option> </select>');
@@ -56,7 +55,7 @@ var createTextHolder = function ()
 		t.push('<script type="text/javascript">addEvents()</script>');
 		t.push('</div>');
 	t.push('<ol>');
-	$('body > table').eq(3).after(t.join(''));
+	jQuery('form[name=timeRecordForm] td[valign=top]').eq(0).after(t.join(''));
 }
 
 var addEvents = function ()
@@ -64,15 +63,19 @@ var addEvents = function ()
 	$('#generate-table').on('click', transform);
 	$('#post-data').on('click', postData);
 	//- reorder the calendar and project picker
-	var oldFormRow = $('form[name=mytimeForm]').find('table table > tbody > tr').eq(0),
-		projectPicker = oldFormRow.find('td').eq(0).detach().find('table > tbody > tr');
+	var oldForm = jQuery('form[name=timeRecordForm] td[valign=top]');
+	// var oldFormRow = $('form[name=mytimeForm]').find('table table > tbody > tr').eq(0),
+	var projectPicker = oldForm.find('select');
+	$('#project-picker').append('<br>');
 	$('#project-picker').append(projectPicker.eq(0).detach());
-	$('#project-picker').append(projectPicker.eq(1).find('select').detach());
-	// $('form[name=mytimeForm]').remove();
+	$('#project-picker').append('<br>');
+	$('#project-picker').append(projectPicker.eq(1).detach());
+	oldForm.eq(0).html($('#tti'));
 }
 
-var postData = function ()
+var postData = function (ev)
 {
+	ev.preventDefault();
 	var days = $('#excel-import-table tbody tr'), posts = [], currentDay, t, c, d,fullYear;
 	if (days.length > 0)
 	{
@@ -110,8 +113,9 @@ var postData = function ()
 	}
 }
 
-var transform = function ()
-{
+var transform = function (ev)
+{	
+	ev.preventDefault();
 	var t = $.trim($('#excel-data').val());
 	if (t == '')
 		return;
@@ -203,34 +207,9 @@ var postToTikal = function ()
 postToTikal.hasPosts = false;
 postToTikal.errors = [];
 
+// start();
+jQuery(function(){
 
-/*
+	createTextHolder();
 
-	Activate the extension
-
- */
-
-var regex = /tikalk/;
-
-function handleRequest(){
-	console.log('handleRequest', arguments)
-}
-function importScript() {
-	//- check the loclaSorage true/false for activating full tube
-	// var s = document.createElement('script');
-	// s.setAttribute('src', 'http://www.orizens.com/tools/tikalTimePosting.js?version=1.0&date=' + new Date());
-	// document.body.appendChild(s);
-	// chrome.extension.sendRequest({'action': 'start'}, handleRequest);
-	start();
-	setTimeout('scrollPage()', 2500);
-}
-function scrollPage() {
-	document.body.scrollTop = 0;
-}
-// Test the text of the body element against our regular expression.
-if (regex.test(document.body.innerText)) {
-  // The regular expression produced a match, so notify the background page.
-  importScript();
-} else {
-  // No match was found.
-}
+})
