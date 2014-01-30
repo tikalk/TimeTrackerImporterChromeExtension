@@ -1,0 +1,104 @@
+
+<button class="btn btn-danger" id="hide-tti">
+	<i class="glyphicon glyphicon-repeat"></i>
+	Hide/Show Excel Importer
+</button>
+<div id="tti" class="container" style="padding: 10px 20px; text-align: left;max-width:960px;margin:0 auto;">
+	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<style>
+	ol.import-steps li {
+		font-size: 1em
+	} 
+	li h2 {
+		font-size: 1em;
+	} 
+	#activity{
+		margin-left: 64px;
+	}
+	#tti {
+		text-align: left;
+		max-width: 960px;
+		margin: 0 auto;
+	}
+	</style>
+	<div class="import-steps">
+		<div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="panel-title">Select Year and Month of your timesheet</div>
+				</div>
+			<div class="panel-body">
+				<div id="cal-picker">
+					<span>Year:</span><select style="padding: 4px;" name="sheet-year" id="sheet-year"> <optgroup label="Pick A Year"><option value="2014">2014</option> <option value="2015">2015</option><option value="2016">2016</option> </optgroup> </select>
+				</div>
+				<div><span>Month:</span>
+					<select style="padding: 4px;" name="sheet-month" id="sheet-month"><option value="0">Pick A month</option> <option value="01">January</option> <option value="02">February</option> <option value="03">March</option> <option value="04">April</option> <option value="05">May</option> <option value="06">June</option> <option value="07">July</option> <option value="08">August</option> <option value="09">September</option> <option value="10">October</option> <option value="11">November</option> <option value="12">December</option> </select>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="panel-title">
+					Copy &amp; Paste your excel sheet data to this box
+					<p>* time format: 18:40 (hh:mm)<br />* day number format: 8 or 27 (d)</p>
+				</div>
+			</div>
+			<div class="panel-body">
+				<h5>Only the first 4 columns will be parsed:</h5>
+				<h5>day number, start time, end time, notes</h5>
+				<h5>Your time sheet which will be posted to tikal is:</h5>
+				<textarea id="excel-data" cols="70" rows="10"></textarea>
+			</div>
+		</div>
+
+
+		<div class="panel panel-success">
+				<div class="panel-heading">
+					<div class="panel-title">
+						Click 
+						<button class="btn btn-primary" id="generate-table">Generate Table</button>
+					</div>
+				</div>
+			<div class="panel-body">
+				<div id="generated-table">
+					no data yet...please paste your sheet on the textarea above
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="panel-title">Pick a Project and an Activity from below (by the calendar) - these will be applied to all dates</div>
+			</div>
+			<div id="project-picker" class="panel-body">
+
+			</div>
+		</div>
+
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="panel-title">Last Step</div>
+			</div>
+			<div class="panel-body">
+				<p>
+					After you generated the data,
+					Check it,
+					Click the "Submit Data to Tikal" button
+				</p>
+				<button class="btn btn-primary" id="post-data">Submit Data to Tikal</button>
+			</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading panel-title">
+				Submit Status
+			</div>
+			<div id="ajax-progress"  class="panel-body">
+				
+			
+			</div>
+		</div>
+		<script type="text/javascript">addEvents()</script>
+	</div>
+</div>
+</div>

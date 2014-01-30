@@ -16,9 +16,11 @@
   alert(1)
   	chrome.extension.onRequest.addListener(
 		  function(request, sender, sendResponse) {
-			if (request.action === 'start')
-			  start();
+			if (request.action === 'get-html');
+			  console.log('get response got', arguments);
 		  });
 
+    chrome.extension.sendRequest({'action': 'get-html'}, handleRequest);
+    
   </script>
 </html>

@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2010 The Chromium Authors. All rights reserved.  Use of this
- * source code is governed by a BSD-style license that can be found in the
- * LICENSE file.
- */
-
 /*****************************************
 
 
@@ -12,69 +6,28 @@
 
   ****************************************/
 
-// var s = document.createElement('script');
-// s.onload = function()
-// {
-// 	createTextHolder();
-// }
-// s.setAttribute('src', 'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js');
-
-// var start = function(){
-// 	document.body.appendChild(s);
-// }
-
-var createTextHolder = function ()
-{
-	var t = [];
-	t.push('<style>ol.import-steps li {font-size: 1.3em} li h2 {font-size: 1em;} form[name=mytimeForm]{position: absolute;left: 567px;top: 126px;}#activity{margin-left: 64px;}form[name=mytimeForm] + table { {position: fixed;bottom: 0; right: 0;width: 42%; background: white; box-shadow: 0 0 15px 2px lightgray;}</style>');
-	t.push('<div id="tti" style="padding: 10px 20px;">');
-	t.push('<ol class="import-steps">');
-		t.push('<li>Select Year and Month of your timesheet');
-			t.push('<div id="cal-picker">');
-			t.push('<span>Year:</span><select style="padding: 4px;" name="sheet-year" id="sheet-year"> <optgroup label="Pick A Year"><option value="2014">2014</option> <option value="2015">2015</option><option value="2016">2016</option> </optgroup> </select>');
-			t.push('</div>');
-			t.push('<div><span>Month:</span>');
-			t.push('<select style="padding: 4px;" name="sheet-month" id="sheet-month"><option value="0">Pick A month</option> <option value="01">January</option> <option value="02">February</option> <option value="03">March</option> <option value="04">April</option> <option value="05">May</option> <option value="06">June</option> <option value="07">July</option> <option value="08">August</option> <option value="09">September</option> <option value="10">October</option> <option value="11">November</option> <option value="12">December</option> </select>');
-			t.push('</div>');
-		t.push('</li>');
-		t.push('<li>Copy & Paste your excel sheet data to this box');
-			t.push('<h2 style="color: red">NEW: a 4th column - "note" will be parsed now</h2>')
-			t.push('<textarea id="excel-data" cols="100" rows="10"></textarea>');
-		t.push('</li>');
-		t.push('<li>Click ');
-			t.push('<button id="generate-table">Generate Table</button>');
-			t.push('<h2>Only the first 4 columns will be parsed:</h2><h4>day number, start time, end time</h4>');
-			t.push('<p>* time format: 18:40 (hh:mm)<br />* day number format: 8 or 27 (d)</p>');
-			t.push('<h2>Your time sheet which will be posted to tikal is:</h2><div id="generated-table">no data yet...please paste your sheet on the textarea above</div>');
-		t.push('</li>');
-		t.push('<li id="project-picker">Pick a Project and an Activity from below (by the calendar) - these will be applied to all dates</li>');
-		t.push('<li>After you generated the data and checked it - Click the "Submit Data to Tikal" button<br />');
-			t.push('<button id="post-data">Submit Data to Tikal</button>');
-		t.push('</li>');
-		t.push('<div id="ajax-progress" style="color: blue; font-weight: bold"></div>');
-		t.push('<script type="text/javascript">addEvents()</script>');
-		t.push('</div>');
-	t.push('<ol>');
-	jQuery('form[name=timeRecordForm] td[valign=top]').eq(0).after(t.join(''));
-}
-
-var addEvents = function ()
-{
+var addEvents = function () {
 	$('#generate-table').on('click', transform);
 	$('#post-data').on('click', postData);
 	//- reorder the calendar and project picker
 	var oldForm = jQuery('form[name=timeRecordForm] td[valign=top]');
 	// var oldFormRow = $('form[name=mytimeForm]').find('table table > tbody > tr').eq(0),
 	var projectPicker = oldForm.find('select');
-	$('#project-picker').append('<br>');
-	$('#project-picker').append(projectPicker.eq(0).detach());
-	$('#project-picker').append('<br>');
-	$('#project-picker').append(projectPicker.eq(1).detach());
-	oldForm.eq(0).html($('#tti'));
+	var $picker = $('#project-picker');
+	$picker.append('<br>');
+	$picker.append(projectPicker.eq(0).clone());
+	$picker.append('<br>');
+	$picker.append(projectPicker.eq(1).clone());
+	// oldForm.eq(0).html($('#tti'));
+	oldForm.hide();
+
+	$('#hide-tti').on('click', function(){
+		$('#tti').toggle();
+		oldForm.toggle();
+	})
 }
 
-var postData = function (ev)
-{
+var postData = function (ev) {
 	ev.preventDefault();
 	var days = $('#excel-import-table tbody tr'), posts = [], currentDay, t, c, d,fullYear;
 	if (days.length > 0)
@@ -100,7 +53,7 @@ var postData = function (ev)
 				t.date = $('#sheet-month').val() + '/' + d + '/' + $('#sheet-year').val();
 				t.note = c.length > 3 ? c.eq(3).text() : '';
 				t.project = $('#project').val();
-				t.activity = $('#activity').val();
+				t.task = $('#task').val();
 				posts.push(t);
 			}
 		}
@@ -113,8 +66,7 @@ var postData = function (ev)
 	}
 }
 
-var transform = function (ev)
-{	
+var transform = function (ev) {	
 	ev.preventDefault();
 	var t = $.trim($('#excel-data').val());
 	if (t == '')
@@ -131,27 +83,20 @@ var transform = function (ev)
 		tableHeaders[tableHeaders.length] = '<th><h4>' + headers[i] + '</h4></th>';
 	};
 	tableHeaders[tableHeaders.length] = '</tr></thead>';
-	d = '<style>#excel-import-table {border: 1px solid #ccc; border-collapse: collapse;} \
-	#excel-import-table td {border: 1px solid #ccc;padding: 4px 8px;} \
-	#excel-import-table th h4 {padding: 0;margin: 0;} \
-	#excel-import-table th {background: #000; color: #fff; \
-	}</style>\
-	<table id="excel-import-table">' + tableHeaders.join('') + d + '</table>';
+	d = '<table id="excel-import-table" class="table zebra">' + tableHeaders.join('') + d + '</table>';
 	$('#generated-table').html(d);
 }
 
-var TimeCard = function()
-{
+var TimeCard = function() {
 	return {
 		project: '',
-		activity: '',
+		task: '',
 		start: '',
 		finish: '',
 		note: '',
-		billable:'1',
 		date:'',
 		date_now: $('#calendar_now_time').text(),
-		btmytime:'submit'
+		btn_submit:'Submit'
 	}
 }
 
@@ -163,7 +108,7 @@ var postToTikal = function ()
 		$('#ajax-progress').html('submiting day ' + p[0].date + ' ...');
 		$.ajax({
 			type: 'POST',
-			url: 'https://planet.tikalk.com/timetracker/mytime.php',
+			url: 'https://planet.tikalk.com/timetracker/time.php',
 			data: p[0],
 			success: function(data) {
 				var errors = $(data).find('td.error_style ul li');
@@ -207,9 +152,17 @@ var postToTikal = function ()
 postToTikal.hasPosts = false;
 postToTikal.errors = [];
 
-// start();
+
+function handleRequest(response) {
+		// console.log("from content-scritp", response);
+		jQuery('form[name=timeRecordForm]').before(response);
+}
+
+chrome.extension.onRequest.addListener(
+  function(request, sender, sendResponse) {
+        console.log('onrequest called', arguments);
+});
+
 jQuery(function(){
-
-	createTextHolder();
-
+	chrome.extension.sendRequest({'action': 'get-html'}, handleRequest);
 })
