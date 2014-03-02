@@ -18,13 +18,22 @@ var addEvents = function () {
 	$picker.append(projectPicker.eq(0).clone());
 	$picker.append('<br>');
 	$picker.append(projectPicker.eq(1).clone());
-	// oldForm.eq(0).html($('#tti'));
 	oldForm.hide();
+	var hideTie = JSON.parse(localStorage.getItem('tie-hide'));
 
 	$('#hide-tti').on('click', function(){
+		hideTie = !hideTie;
+		localStorage.setItem('tie-hide', JSON.stringify(hideTie));
 		$('#tti').toggle();
 		oldForm.toggle();
-	})
+	});
+
+	if (hideTie === true) {
+		$('#tti').hide();
+		oldForm.show();
+	} else {
+		hideTie = false;
+	}
 }
 
 var postData = function (ev) {
