@@ -13,6 +13,14 @@ var addEvents = function () {
 	var oldForm = jQuery('form[name=timeRecordForm] td[valign=top]');
 	// var oldFormRow = $('form[name=mytimeForm]').find('table table > tbody > tr').eq(0),
 	var projectPicker = oldForm.find('select');
+	var TIE_TOGGLE_KEY = 'tie-toggle-show';
+	var storageToggleShow = localStorage.getItem(TIE_TOGGLE_KEY);
+	if (storageToggleShow === null) {
+		localStorage.setItem(TIE_TOGGLE_KEY, 'true');
+		storageToggleShow = true;
+	} else {
+		storageToggleShow = eval(storageToggleShow);
+	}
 	var $picker = $('#project-picker');
 	$picker.append('<br>');
 	$picker.append(projectPicker.eq(0).clone());
@@ -20,41 +28,33 @@ var addEvents = function () {
 	$picker.append(projectPicker.eq(1).clone());
 	// oldForm.eq(0).html($('#tti'));
 	oldForm.hide();
-
-	$('#hide-tti').on('click', function(){
+	var toggleExtension = function() {
 		$('#tti').toggle();
 		oldForm.toggle();
-	})
+		storageToggleShow = !storageToggleShow;
+		localStorage.setItem(TIE_TOGGLE_KEY, storageToggleShow.toString());
+	};
+	$('#hide-tti').on('click', toggleExtension);
+	// hide the extension if it was toggled
+	if (storageToggleShow === false) {
+		toggleExtension();
+	}
 }
 
 var postData = function (ev) {
 	ev.preventDefault();
 	var days = $('#excel-import-table tbody tr'), posts = [], currentDay, t, c, d,fullYear;
-	if (days.length > 0)
-	{
+	if (days.length > 0) {
 		if ($('#sheet-month').val() == '0' ||
 			$('#project').val() == '' || $('#activity').val == ''
-			)
-		{
+			) {
 			alert('You have to select 3 items: Month, project and activity');
 			return false;
 		}
-		for (var i = 0; i < days.length; i++)
-		{
+		for (var i = 0; i < days.length; i++) {
 			currentDay = $(days[i]);
-			if ($(currentDay.get(0).childNodes[1]).text() != ''
-				&& $(currentDay.get(0).childNodes[2]).text() != ''
-			)
-			{
-				t = new TimeCard(), c = currentDay.find('td');
-				t.start = c.eq(1).text();
-				t.finish = c.eq(2).text();
-				d = (parseInt(c.eq(0).text()) < 10) ? '0' + c.eq(0).text() : c.eq(0).text();
-				t.date = $('#sheet-month').val() + '/' + d + '/' + $('#sheet-year').val();
-				t.note = c.length > 3 ? c.eq(3).text() : '';
-				t.project = $('#project').val();
-				t.task = $('#task').val();
-				posts.push(t);
+			if (isValidDay(currentDay)) {
+				posts.push(TimeCardFactory(currentDay));
 			}
 		}
 		
@@ -65,7 +65,11 @@ var postData = function (ev) {
 		}
 	}
 }
-
+var isValidDay = function(currentDay) {
+	var isDayFull = $(currentDay.get(0).childNodes[1]).text() != '';
+	var isDateFull = $(currentDay.get(0).childNodes[2]).text() != '';
+	return isDateFull && isDayFull;
+};
 var transform = function (ev) {	
 	ev.preventDefault();
 	var t = $.trim($('#excel-data').val());
@@ -78,8 +82,7 @@ var transform = function (ev) {
 	var rows = $(d), headers = ['day', 'start', 'end', 'note'];
 	var numberofColumns = headers.length;
 	var tableHeaders = ['<thead><tr>'];
-	for (var i = 0; i < numberofColumns; i++)
-	{
+	for (var i = 0; i < numberofColumns; i++) {
 		tableHeaders[tableHeaders.length] = '<th><h4>' + headers[i] + '</h4></th>';
 	};
 	tableHeaders[tableHeaders.length] = '</tr></thead>';
@@ -87,17 +90,33 @@ var transform = function (ev) {
 	$('#generated-table').html(d);
 }
 
-var TimeCard = function() {
-	return {
-		project: '',
-		task: '',
-		start: '',
-		finish: '',
-		note: '',
-		date:'',
-		date_now: $('#calendar_now_time').text(),
-		btn_submit:'Submit'
+var TimeCardFactory = function(currentDayEl) {
+	var t = {};
+	var formatDate = function(date, format){
+		var formated = format
+			.replace('y', date.year)
+			.replace('m', date.month)
+			.replace('d', date.day)
+		return formated;
 	}
+	var c = currentDayEl.find('td');
+	t.start = c.eq(1).text();
+	t.finish = c.eq(2).text();
+	var d = (parseInt(c.eq(0).text()) < 10) ? '0' + c.eq(0).text() : c.eq(0).text();
+	// format now: 2014-06-29 - yyyy-mm-dd
+	var date = {
+		month: $('#sheet-month').val(),
+		day: d,
+		year: $('#sheet-year').val()
+	}
+	t.date = formatDate(date, 'y-m-d');
+	t.note = c.length > 3 ? c.eq(3).text() : '';
+	t.project = $('#project').val();
+	t.task = $('#task').val();
+	t.date_now = $('#calendar_now_time').text();
+	t.btn_submit = 'Submit';
+	
+	return t;
 }
 
 var postToTikal = function ()
