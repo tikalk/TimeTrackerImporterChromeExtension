@@ -1,10 +1,11 @@
-
 <button class="btn btn-danger" id="hide-tti">
 	<i class="glyphicon glyphicon-repeat"></i>
 	Hide/Show Excel Importer
 </button>
 <div id="tti" class="container" style="padding: 10px 20px; text-align: left;max-width:960px;margin:0 auto;">
 	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.11/ng-grid.min.css">
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
 	<style>
 	ol.import-steps li {
 		font-size: 1em
@@ -19,6 +20,11 @@
 		text-align: left;
 		max-width: 960px;
 		margin: 0 auto;
+	}
+	.gridStyle {
+	    border: 1px solid rgb(212,212,212);
+	    width: 400px; 
+	    height: 300px;
 	}
 	</style>
 	<div class="import-steps">
@@ -53,15 +59,19 @@
 
 
 		<div class="panel panel-success">
-				<div class="panel-heading">
+				<div class="panel-heading" ng-controller="GeneratorCtrl">
 					<div class="panel-title">
 						Click 
-						<button class="btn btn-primary" id="generate-table">Generate Table</button>
+						<button class="btn btn-primary" id="generate-table" ng-click="generate()">Generate Table</button>
 					</div>
 				</div>
 			<div class="panel-body">
 				<div id="generated-table">
 					no data yet...please paste your sheet on the textarea above
+				</div>
+				<h2>Editable Grid</h2>
+				<div ng-controller="GridCtrl">
+					<div class="gridStyle" ng-grid="gridOptions"></div>
 				</div>
 			</div>
 		</div>
