@@ -26,34 +26,24 @@ var addEvents = function () {
 	$picker.append(projectPicker.eq(0).clone());
 	$picker.append('<br>');
 	$picker.append(projectPicker.eq(1).clone());
-	oldForm.hide();
 
-	var toggleExtension = function() {
-		$('#tti').toggle();
-		oldForm.toggle();
-		storageToggleShow = !storageToggleShow;
+	var $ext = $('#tti');
+	var toggle = function(show) {
+		if (show) {
+			$ext.show();
+			oldForm.hide();
+		} else {
+			$ext.hide();
+			oldForm.show();
+		}
+		storageToggleShow = show;
 		localStorage.setItem(TIE_TOGGLE_KEY, storageToggleShow.toString());
 	};
-	$('#hide-tti').on('click', toggleExtension);
+	$('#hide-tti').on('click', function(){
+		toggle(!storageToggleShow);
+	});
 	// hide the extension if it was toggled
-	if (storageToggleShow === false) {
-		toggleExtension();
-	}
-	// var hideTie = JSON.parse(localStorage.getItem('tie-hide'));
-
-	// $('#hide-tti').on('click', function(){
-	// 	hideTie = !hideTie;
-	// 	localStorage.setItem('tie-hide', JSON.stringify(hideTie));
-	// 	$('#tti').toggle();
-	// 	oldForm.toggle();
-	// });
-
-	// if (hideTie === true) {
-	// 	$('#tti').hide();
-	// 	oldForm.show();
-	// } else {
-	// 	hideTie = false;
-	// }
+	toggle(storageToggleShow);
 }
 
 var postData = function (ev) {
