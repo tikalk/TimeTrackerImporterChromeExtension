@@ -44,22 +44,21 @@ var addEvents = function () {
 	});
 	// hide the extension if it was toggled
 	toggle(storageToggleShow);
-}
+};
 
 var postData = function (ev) {
 	ev.preventDefault();
 	var days = $('#excel-import-table tbody tr'), posts = [], currentDay, t, c, d,fullYear;
 	if (days.length > 0) {
-		if ($('#sheet-month').val() == '0' ||
-			$('#project').val() == '' || $('#activity').val == ''
-			) {
-			alert('You have to select 3 items: Month, project and activity');
+		if (isValidProjectSetup) {
+			alert('You have to select 3 items: Month, Project and Activity');
 			return false;
 		}
 		for (var i = 0; i < days.length; i++) {
 			currentDay = $(days[i]);
-			if (isValidDay(currentDay)) {
+			if (isValidDay(currentDay)){
 				posts.push(TimeCardFactory(currentDay));
+			}
 		}
 		
 		if (posts.length) {
@@ -68,7 +67,15 @@ var postData = function (ev) {
 			postToTikal();
 		}
 	}
-}
+};
+
+var isValidProjectSetup = function() {
+	var month = $('#sheet-month').val() == '0';
+	var project = $('#project').val() == '';
+	var activity = $('#activity').val == '';
+	return month || project || activity;
+};
+
 var isValidDay = function(currentDay) {
 	var isDayFull = $(currentDay.get(0).childNodes[1]).text() != '';
 	var isDateFull = $(currentDay.get(0).childNodes[2]).text() != '';
@@ -123,11 +130,9 @@ var TimeCardFactory = function(currentDayEl) {
 	return t;
 }
 
-var postToTikal = function ()
-{	
+var postToTikal = function (){	
 	var p = postToTikal.posts;
-	if (p.length > 0)
-	{
+	if (p.length > 0) {
 		$('#ajax-progress').html('submiting day ' + p[0].date + ' ...');
 		$.ajax({
 			type: 'POST',
@@ -145,32 +150,31 @@ var postToTikal = function ()
 				alert('there was an error in submitting the data.\nplease check your input.')
 			}
 		});
+	} else {
+		parseErrors();
 	}
-	else
-	{
-		if (postToTikal.hasPosts)
-		{
-			var h = [], successMsg = 'all dates have been submitted successfuly to tikal.<br />Please check the report for the selected month.<br />',
-				errorMsg = 'Some dates might have been submitted successfuly to tikal.<br />Please check the report for the selected month.<br />',
-				errors = postToTikal.errors;
-			if (errors.length) {
-				h.push(errorMsg);
-				h.push('<div style="color: red">These dates had errors and have not been saved to the database:<br />');
-				for (var d = 0; d < errors.length; d++) {
-					h.push('<br/>date ' + errors[d].date.date + ' had these errors: ');
-					for (var i = 0; i < errors[d].errors.length; i++) {
-						h.push($(errors[d].errors[i]).text() + ', ');
-					}
-				}
-				h.push('</div>');
+}
+postToTikal.parseErrors = function() {
+	if (!postToTikal.hasPosts) return;
+	var h = [], successMsg = 'all dates have been submitted successfuly to tikal.<br />Please check the report for the selected month.<br />',
+		errorMsg = 'Some dates might have been submitted successfuly to tikal.<br />Please check the report for the selected month.<br />',
+		errors = postToTikal.errors;
+	if (errors.length) {
+		h.push(errorMsg);
+		h.push('<div style="color: red">These dates had errors and have not been saved to the database:<br />');
+		for (var d = 0; d < errors.length; d++) {
+			h.push('<br/>date ' + errors[d].date.date + ' had these errors: ');
+			for (var i = 0; i < errors[d].errors.length; i++) {
+				h.push($(errors[d].errors[i]).text() + ', ');
 			}
-			else {
-				h.push(successMsg);
-			}
-				
-			$('#ajax-progress').html(h.join(''));
 		}
+		h.push('</div>');
 	}
+	else {
+		h.push(successMsg);
+	}
+		
+	$('#ajax-progress').html(h.join(''));
 }
 postToTikal.hasPosts = false;
 postToTikal.errors = [];
