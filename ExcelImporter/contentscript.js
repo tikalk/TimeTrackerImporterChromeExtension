@@ -50,7 +50,7 @@ var postData = function (ev) {
 	ev.preventDefault();
 	var days = $('#excel-import-table tbody tr'), posts = [], currentDay, t, c, d,fullYear;
 	if (days.length > 0) {
-		if (isValidProjectSetup) {
+		if (isValidProjectSetup()) {
 			alert('You have to select 3 items: Month, Project and Activity');
 			return false;
 		}
