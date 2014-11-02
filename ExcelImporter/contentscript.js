@@ -151,7 +151,7 @@ var postToTikal = function (){
 			}
 		});
 	} else {
-		parseErrors();
+		postToTikal.parseErrors();
 	}
 }
 postToTikal.parseErrors = function() {
