@@ -9,6 +9,20 @@
 var addEvents = function () {
 	$('#generate-table').on('click', transform);
 	$('#post-data').on('click', postData);
+	// auto select the current year
+	var currentYear = new Date().getFullYear();
+	$yearSelector = $('#sheet-year');
+	$yearSelector.each(function (index, el) {
+		if ($(el).attr('value') == currentYear){
+			$yearSelector.prop('selectedIndex', index);
+		}
+	});
+	// add 3 more years
+	var $optgroup = $yearSelector.find('optgroup');
+	$optgroup.prepend('<option value="2015">' + (currentYear - 1) + '</option>');
+	$optgroup.append('<option value="2015">' + (currentYear + 1) + '</option>');
+	$optgroup.append('<option value="2015">' + (currentYear + 2) + '</option>');
+	$optgroup.append('<option value="2015">' + (currentYear + 3) + '</option>');
 	//- reorder the calendar and project picker
 	var oldForm = jQuery('form[name=timeRecordForm] td[valign=top]');
 	// var oldFormRow = $('form[name=mytimeForm]').find('table table > tbody > tr').eq(0),

@@ -1,6 +1,6 @@
 {
   "name" : "Tikal Excel Importer (By Oren Farhi))",
-  "version": "2.5",
+  "version": "2.5.1",
   "manifest_version" : 2,
   "description" : "Import an Excel sheet or a table format of an entire month to Tikal's time tracker.",
   "homepage_url": "http://tikalk.github.com/TimeTrackerImporterChromeExtension/",
