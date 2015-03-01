@@ -1,132 +1,435 @@
-<!DOCTYPE >
-<html>
-	<head>
-		<title>Tikal auto time posting</title>
-		<link href='http://fonts.googleapis.com/css?family=Marvel' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Pompiere' rel='stylesheet' type='text/css'>
-		<style type="text/css">
-			body {
-				font-size: 0.8em;
-				font-family: Verdana;
-				background-image: url('http://subtlepatterns.com/patterns/soft_wallpaper.png');
-				background-repeat: repeat;
-				background-position: top left;
-				padding: 0;
-				margin: 0;
-			}
-			h1 {
-				font-size: 50px;
-				background: rgba(0, 0, 0, .6);
-				margin: 0;
-				padding: 10px;
-				margin: 10px 0;
-			}
-			#main {
-				width: 960px;
-				margin: 0 auto;
-			}
-			#content {
-				padding: 10px 20px;
-				background-color: rgba(255, 255, 255, .7);
-				margin-left: 182px;
-			}
-			#chrome-ext {
-				text-decoration: none;
-				color: white;
-				padding: 10px 10px;
-				border-radius: 2px;
-				line-height: 3;
-				box-shadow: 0 0 3px #333;
-				background: -webkit-linear-gradient(top, #87AB41 0%, #658031 100%);
-				-webkit-transition: all .3s ease-out;
-			}
+<!DOCTYPE html>
+<html lang="en">
 
-			#chrome-ext:hover {
-				box-shadow: 0px 0px 15px #333;
-			}
-			.download-container{
-				margin-top: 10px;
-			}
-			.content-shadow {
-				box-shadow: 0 0px 10px rgba(0, 0, 0, .5);
-			}
-			h1, h2 {
-				font-family: Trebuchet MS, verdana;
-				color: #A9C76D;
-			}
-			h1 {
-				font-family: 'Marvel', sans-serif;
-				margin-left: 182px
-			}
-			h2 {
-				font-family: 'Pompiere', cursive;
-				color: #647F30;
-				box-shadow: 0 5px 16px -7px gray;
-			}
-			p, li {
-				line-height: 1.5;
-			}
-			footer {
-				padding: 10px 0 10px 182px;
-			}
-			.logo {
-				float: left;
-			}
-			a:link, a:visited {
-				color: #85A840;
-				text-decoration: none;
-			}
-			a:hover {
-				text-decoration: underline;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="main">
-			<img src="images/icon_large_tie.jpg" alt="Tie logo" class="logo content-shadow">
-			<h1 class="content-shadow">Tie - Tikal's Time Tracker Sheet Importer</h1>
-			<div id="content" class="content-shadow">
-				<p>Tie is a a Chrome extension which will let you post your <strong>Montly</strong> excel time sheet to <a href="http://www.tikalk.com">Tikal's</a> time tracker. This system is based on the open source system - <a href="http://www.anuko.com/content/time_tracker/">Anuku</a></p>
-				<h2>UPDATE: 11/02/2014 - Chrome extenstion for Tie</h2>
-				<p>
-					fixed: summary of the end of sumbitting process wasn't display
-				</p>
-				<h2>UPDATE: 30/06/2014 - Chrome extenstion for Tie</h2>
-				<p>
-					fixed posting to tikal's time tracker (parameters change in post action)
-					added toggle state saving (if ext is hidden, the next you visit the tracker it will stay hidden)
-				</p>
-				<h2>UPDATE: 30/01/2014 - Chrome extenstion for Tie</h2>
-				<p>
-					new layout!
-					added bootstrap for design.
-					added: new toggle button to hide/show the extension
-				</p>
-				<h2>19/01/2014 - Chrome extenstion for Tie</h2>
-				<p>
-					The Excel Importer has been updated to follow the new API and instructions of developing extensiton for Chrome.
-					This Google Chrome extension will load the bookmarklet script automatically once you enter the time tracker page.<br />
-					<strong>Right Click on the green button and "Save link as"</strong>
-					<div class="download-container">
-						<a id="chrome-ext" href="ExcelImporter.crx">Download and install Excel-Importer chrome extension</a>
-					</div>
-				</p>
-				<h2>How To Install The Extension</h2>
-				<ol>
-					<li>Open Google Chrome's <a href="chrome://chrome/extensions/" target="_blank">extension page</a> (url: <i>chrome://chrome/extensions/</i>)</li>
-					<li>Drag the extension file you've downloaded and drop it into this page</li>
-					<li>approve installation.</li>
-				</ol>
-				<h2>Requirements</h2>
-				<p>
-					Your excel should have 4 columns in the following order: day, start time, end time and comments.<br/>
-					you can <a href="Tikal-Hours.xls">download an example of such an excel file</a>.
-				</p>
-			</div>
-			<a href="https://github.com/tikalk/TimeTrackerImporterChromeExtension"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
-			<footer>
-				By <a href="http://www.tikalk.com/users/orenf">Oren Farhi</a>
-			</footer>
-		</div>
-	</body>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>TIE - Tikal's Time Tracker Sheet Importer</title>
+
+    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/freelancer.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <style>
+    .success a {
+        color: #2c3e50;
+    }
+    </style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" class="index">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#page-top">TIE</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#updates">Updates</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#install">Install</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img class="img-responsive" src="img/profile.png" alt="">
+                    <div class="intro-text">
+                        <span class="name">TIE</span>
+                        <hr class="star-light">
+                        <span>Tie is a a Chrome extension which will let you post your <strong>Montly</strong> excel time sheet to Tikal's time tracker. This system is based on the open source system - Anuku</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Portfolio Grid Section -->
+    <section id="updates">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Updates</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 portfolio-item">
+                    <h4>UPDATE: 01/03/2015</h4>
+                    <p>
+                        changed: year seletor is now dynamic
+                    </p>
+                    <h4>UPDATE: 11/02/2014</h4>
+                    <p>
+                        fixed: summary of the end of sumbitting process wasn't display
+                    </p>
+                    <h4>UPDATE: 30/06/2014</h4>
+                    <p>
+                        fixed posting to tikal's time tracker (parameters change in post action)
+                        added toggle state saving (if ext is hidden, the next you visit the tracker it will stay hidden)
+                    </p>
+                    <h4>UPDATE: 30/01/2014</h4>
+                    <p>
+                        new layout!
+                        added bootstrap for design.
+                        added: new toggle button to hide/show the extension
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="success" id="install">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Install</h2>
+                    <hr class="star-light">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <ol>
+                        <li>Open Google Chrome's <a href="chrome://chrome/extensions/" target="_blank">extension page</a> (url: <i>chrome://chrome/extensions/</i>)</li>
+                        <li>Drag the extension file you've downloaded and drop it into this page</li>
+                        <li>approve installation.</li>
+                    </ol>
+                </div>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h4>Requirements</h4>
+                    <p>
+                        Your excel should have 4 columns in the following order: day, start time, end time and comments.<br/>
+                        you can <a href="Tikal-Hours.xls">download an example of such an excel file</a>.
+                    </p>
+                </div>
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <a href="ExcelImporter.crx" class="btn btn-lg btn-outline">
+                        <i class="fa fa-download"></i> Download TIE Extension
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <a href="https://github.com/tikalk/TimeTrackerImporterChromeExtension"><img style="position: fixed; top: 0; right: 0; border: 0;z-index: 10000000" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="footer-above">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col col-md-4">
+                        <h3>Author</h3>
+                        <p><a href="http://github.com/orizens" target="_blank">Oren Farhi</a></p>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <h3>Around the Web</h3>
+                        <ul class="list-inline">
+                            <li>
+                                <a href="https://github.com/tikalk/TimeTrackerImporterChromeExtension" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <h3>About Tikal</h3>
+                        <p><a href="http://tiaklk.com" target="_blank">Tikalk</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll visible-xs visble-sm">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+
+    <!-- Portfolio Modals -->
+    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Project Title</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/cabin.png" class="img-responsive img-centered" alt="">
+                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <ul class="list-inline item-details">
+                                <li>Client:
+                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    </strong>
+                                </li>
+                                <li>Date:
+                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    </strong>
+                                </li>
+                                <li>Service:
+                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    </strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Project Title</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/cake.png" class="img-responsive img-centered" alt="">
+                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <ul class="list-inline item-details">
+                                <li>Client:
+                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    </strong>
+                                </li>
+                                <li>Date:
+                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    </strong>
+                                </li>
+                                <li>Service:
+                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    </strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Project Title</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/circus.png" class="img-responsive img-centered" alt="">
+                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <ul class="list-inline item-details">
+                                <li>Client:
+                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    </strong>
+                                </li>
+                                <li>Date:
+                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    </strong>
+                                </li>
+                                <li>Service:
+                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    </strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Project Title</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/game.png" class="img-responsive img-centered" alt="">
+                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <ul class="list-inline item-details">
+                                <li>Client:
+                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    </strong>
+                                </li>
+                                <li>Date:
+                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    </strong>
+                                </li>
+                                <li>Service:
+                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    </strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Project Title</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/safe.png" class="img-responsive img-centered" alt="">
+                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <ul class="list-inline item-details">
+                                <li>Client:
+                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    </strong>
+                                </li>
+                                <li>Date:
+                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    </strong>
+                                </li>
+                                <li>Service:
+                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    </strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Project Title</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/submarine.png" class="img-responsive img-centered" alt="">
+                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <ul class="list-inline item-details">
+                                <li>Client:
+                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    </strong>
+                                </li>
+                                <li>Date:
+                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    </strong>
+                                </li>
+                                <li>Service:
+                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    </strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/freelancer.js"></script>
+
+</body>
+
 </html>
