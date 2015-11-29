@@ -55,8 +55,8 @@
 		<div class="panel panel-success">
 				<div class="panel-heading">
 					<div class="panel-title">
-						Click 
-						<button class="btn btn-primary" id="generate-table">Generate Table</button>
+						Check The Hours Before You Continue
+						<!-- <button class="btn btn-primary" id="generate-table">Generate Table</button> -->
 					</div>
 				</div>
 			<div class="panel-body">
@@ -98,7 +98,9 @@
 			
 			</div>
 		</div>
-		<script type="text/javascript">addEvents()</script>
+		<script type="text/javascript">
+			$(document).trigger('app:ready');
+		</script>
 	</div>
 </div>
 </div>

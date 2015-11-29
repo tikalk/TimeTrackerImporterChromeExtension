@@ -5,24 +5,40 @@
 
 
   ****************************************/
+(function(){
+$(document).on('app:ready', addEvents);
 
-var addEvents = function () {
+function addEvents (){
 	$('#generate-table').on('click', transform);
 	$('#post-data').on('click', postData);
+	$('#excel-data').on('input', transform);
+	
 	// auto select the current year
 	var currentYear = new Date().getFullYear();
-	$yearSelector = $('#sheet-year');
-	$yearSelector.each(function (index, el) {
+	var currentMonth = new Date().getMonth();
+	var currentDay = new Date().getDate();
+
+	// calculate correct month by assuming current day
+	if (currentDay < 31 && currentDay > 20) {
+		currentMonth = currentMonth === 11 ? 1 : currentMonth + 1;
+	}
+
+	var $monthSelector = $('#sheet-month');
+	$monthSelector.prop('selectedIndex', currentMonth);
+	// add 3 more years
+	var $yearSelector = $('#sheet-year');
+	var $optgroup = $yearSelector.find('optgroup');
+	$optgroup.prepend('<option value="' + (currentYear - 1) + '">' + (currentYear - 1) + '</option>');
+	$optgroup.append('<option value="' + (currentYear + 1) + '">' + (currentYear + 1) + '</option>');
+	$optgroup.append('<option value="' + (currentYear + 2) + '">' + (currentYear + 2) + '</option>');
+	$optgroup.append('<option value="' + (currentYear + 3) + '">' + (currentYear + 3) + '</option>');
+	// select the current year
+	$optgroup.children().each(function (index, el) {
 		if ($(el).attr('value') == currentYear){
 			$yearSelector.prop('selectedIndex', index);
 		}
 	});
-	// add 3 more years
-	var $optgroup = $yearSelector.find('optgroup');
-	$optgroup.prepend('<option value="2015">' + (currentYear - 1) + '</option>');
-	$optgroup.append('<option value="2015">' + (currentYear + 1) + '</option>');
-	$optgroup.append('<option value="2015">' + (currentYear + 2) + '</option>');
-	$optgroup.append('<option value="2015">' + (currentYear + 3) + '</option>');
+
 	//- reorder the calendar and project picker
 	var oldForm = jQuery('form[name=timeRecordForm] td[valign=top]');
 	// var oldFormRow = $('form[name=mytimeForm]').find('table table > tbody > tr').eq(0),
@@ -60,7 +76,7 @@ var addEvents = function () {
 	toggle(storageToggleShow);
 };
 
-var postData = function (ev) {
+function postData (ev) {
 	ev.preventDefault();
 	var days = $('#excel-import-table tbody tr'), posts = [], currentDay, t, c, d,fullYear;
 	if (days.length > 0) {
@@ -83,19 +99,19 @@ var postData = function (ev) {
 	}
 };
 
-var isValidProjectSetup = function() {
+function isValidProjectSetup () {
 	var month = $('#sheet-month').val() == '0';
 	var project = $('#project').val() == '';
 	var activity = $('#activity').val == '';
 	return month || project || activity;
 };
 
-var isValidDay = function(currentDay) {
+function isValidDay (currentDay) {
 	var isDayFull = $(currentDay.get(0).childNodes[1]).text() != '';
 	var isDateFull = $(currentDay.get(0).childNodes[2]).text() != '';
 	return isDateFull && isDayFull;
 };
-var transform = function (ev) {	
+function transform (ev) {	
 	ev.preventDefault();
 	var t = $.trim($('#excel-data').val());
 	if (t == '')
@@ -115,7 +131,7 @@ var transform = function (ev) {
 	$('#generated-table').html(d);
 }
 
-var TimeCardFactory = function(currentDayEl) {
+function TimeCardFactory (currentDayEl) {
 	var t = {};
 	var formatDate = function(date, format){
 		var formated = format
@@ -144,7 +160,7 @@ var TimeCardFactory = function(currentDayEl) {
 	return t;
 }
 
-var postToTikal = function (){	
+function postToTikal (){	
 	var p = postToTikal.posts;
 	if (p.length > 0) {
 		$('#ajax-progress').html('submiting day ' + p[0].date + ' ...');
@@ -207,3 +223,5 @@ chrome.extension.onRequest.addListener(
 jQuery(function(){
 	chrome.extension.sendRequest({'action': 'get-html'}, handleRequest);
 })
+
+}());
