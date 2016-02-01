@@ -12,7 +12,7 @@ function addEvents (){
 	$('#generate-table').on('click', transform);
 	$('#post-data').on('click', postData);
 	$('#excel-data').on('input', transform);
-	
+
 	// auto select the current year
 	var currentYear = new Date().getFullYear();
 	var currentMonth = new Date().getMonth();
@@ -28,7 +28,8 @@ function addEvents (){
 	// add 3 more years
 	var $yearSelector = $('#sheet-year');
 	var $optgroup = $yearSelector.find('optgroup');
-	$optgroup.prepend('<option value="' + (currentYear - 1) + '">' + (currentYear - 1) + '</option>');
+	$optgroup.append('<option value="' + (currentYear - 1) + '">' + (currentYear - 1) + '</option>');
+	$optgroup.append('<option value="' + (currentYear) + '">' + (currentYear) + '</option>');
 	$optgroup.append('<option value="' + (currentYear + 1) + '">' + (currentYear + 1) + '</option>');
 	$optgroup.append('<option value="' + (currentYear + 2) + '">' + (currentYear + 2) + '</option>');
 	$optgroup.append('<option value="' + (currentYear + 3) + '">' + (currentYear + 3) + '</option>');
@@ -90,7 +91,7 @@ function postData (ev) {
 				posts.push(TimeCardFactory(currentDay));
 			}
 		}
-		
+
 		if (posts.length) {
 			postToTikal.posts = posts;
 			postToTikal.hasPosts = true;
@@ -111,7 +112,7 @@ function isValidDay (currentDay) {
 	var isDateFull = $(currentDay.get(0).childNodes[2]).text() != '';
 	return isDateFull && isDayFull;
 };
-function transform (ev) {	
+function transform (ev) {
 	ev.preventDefault();
 	var t = $.trim($('#excel-data').val());
 	if (t == '')
@@ -156,11 +157,11 @@ function TimeCardFactory (currentDayEl) {
 	t.task = $('#task').val();
 	t.date_now = $('#calendar_now_time').text();
 	t.btn_submit = 'Submit';
-	
+
 	return t;
 }
 
-function postToTikal (){	
+function postToTikal (){
 	var p = postToTikal.posts;
 	if (p.length > 0) {
 		$('#ajax-progress').html('submiting day ' + p[0].date + ' ...');
@@ -203,7 +204,7 @@ postToTikal.parseErrors = function() {
 	else {
 		h.push(successMsg);
 	}
-		
+
 	$('#ajax-progress').html(h.join(''));
 }
 postToTikal.hasPosts = false;
